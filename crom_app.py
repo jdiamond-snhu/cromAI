@@ -73,7 +73,7 @@ with st.sidebar:
     st.session_state.messages = [{
         "role": "assistant",
         "content": (
-            "THE PAST IS ASHES. SPEAK AGAIN, MORTAL, BEFORE I LOSE PATIENCE."
+            "THE PAST IS ASHES. SPEAK, MORTAL, BEFORE I LOSE PATIENCE."
         ),
     }]
     st.rerun()
