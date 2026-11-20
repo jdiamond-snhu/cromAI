@@ -20,7 +20,7 @@ def set_background(image_path):
        .stApp {{
             background-image: url("data:image/jpg;base64,{encoded}");
             background-size: cover;
-            background-position: bottom;
+            background-position: center;
             background-attachment: fixed;
         }}
         [data-testid="stSidebar"] {{
