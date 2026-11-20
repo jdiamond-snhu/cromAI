@@ -6,7 +6,7 @@ import re
 import time
 import streamlit as st
 
-# 1. Page Configuration (Wide layout gives the background room to breathe)
+# 1. Page Configuration
 st.set_page_config(page_title="CROM", page_icon="⚔️", layout="wide")
 
 
@@ -39,7 +39,6 @@ def set_background(image_path):
     st.markdown(bg_css, unsafe_allow_html=True)
 
 
-# Call the background function (make sure bg.jpg is in your folder)
 set_background("bg.jpg")
 
 
@@ -61,7 +60,6 @@ with st.sidebar:
   )
   st.divider()
 
-  # Interactive slider to adjust CROM's hostility
   mock_chance = st.slider(
       "CROM's Hostility (Mockery %)",
       min_value=0,
@@ -72,7 +70,6 @@ with st.sidebar:
 
   st.divider()
 
-  # Button to clear chat history
   if st.button("⚡ SMITE CHAT HISTORY", use_container_width=True):
     st.session_state.messages = [{
         "role": "assistant",
@@ -98,7 +95,7 @@ def crom_respond(user_input, hostility):
   return random.choice(FALLBACKS)
 
 
-# 6. Main Display Area
+# 6. Main Display Area (Header + Top Input Box)
 st.title("⚔️ CROM")
 st.caption("DO NOT PRAY. DO NOT WHINE. SPEAK.")
 
@@ -108,20 +105,30 @@ if "messages" not in st.session_state:
       "content": "CROM SITS UPON HIS MOUNTAIN. SPEAK, WEAKLING.",
   }]
 
-for message in st.session_state.messages:
+# Top Input Form (Pressing Enter or clicking SPEAK submits and clears the box)
+with st.form(key="crom_input_form", clear_on_submit=True):
+  col1, col2 = st.columns([5, 1])
+  with col1:
+    prompt = st.text_input(
+        "Speak",
+        placeholder="Offer your words to the mountain...",
+        label_visibility="collapsed",
+    )
+  with col2:
+    submitted = st.form_submit_button("SPEAK ⚔️", use_container_width=True)
+
+# 7. Process Input & Display Chat Feed (Newest at the Top)
+if submitted and prompt.strip():
+  st.session_state.messages.append({"role": "user", "content": prompt})
+  with st.spinner("*THUNDER RUMBLES...*"):
+    time.sleep(0.5)
+  response = crom_respond(prompt, mock_chance)
+  st.session_state.messages.append({"role": "assistant", "content": response})
+
+st.divider()
+
+# Reverse the list so the latest exchange appears right below the input box
+for message in reversed(st.session_state.messages):
   avatar = "⚔️" if message["role"] == "assistant" else "🦴"
   with st.chat_message(message["role"], avatar=avatar):
     st.markdown(message["content"])
-
-if prompt := st.chat_input("Offer your words to the mountain..."):
-  with st.chat_message("user", avatar="🦴"):
-    st.markdown(prompt)
-  st.session_state.messages.append({"role": "user", "content": prompt})
-
-  with st.chat_message("assistant", avatar="⚔️"):
-    with st.spinner("*THUNDER RUMBLES...*"):
-      time.sleep(0.6)
-    response = crom_respond(prompt, mock_chance)
-    st.markdown(response)
-
-  st.session_state.messages.append({"role": "assistant", "content": response})
