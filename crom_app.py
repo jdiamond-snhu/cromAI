@@ -10,25 +10,26 @@ import streamlit as st
 st.set_page_config(page_title="CROM", page_icon="⚔️", layout="wide")
 
 
-# 2. Helper Function to Set Background Image
+# 2. Helper Function to Set Background Image (Full Brightness)
 def set_background(image_path):
   if os.path.exists(image_path):
     with open(image_path, "rb") as img_file:
       encoded = base64.b64encode(img_file.read()).decode()
     bg_css = f"""
         <style>
-       .stApp {{
+        .stApp {{
             background-image: url("data:image/jpg;base64,{encoded}");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            color: #f0ece1;
         }}
         [data-testid="stSidebar"] {{
             background-color: rgba(20, 20, 24, 0.92);
             border-right: 1px solid #3d3d45;
         }}
         [data-testid="stChatMessage"] {{
-            background-color: rgba(30, 30, 36, 0.85);
+            background-color: rgba(30, 30, 36, 0.88);
             border: 1px solid #444;
             border-radius: 8px;
             padding: 12px;
@@ -51,7 +52,7 @@ brain = load_brain()
 RULES = [(item["pattern"], item["responses"]) for item in brain["rules"]]
 FALLBACKS = brain["fallbacks"]
 
-# 4. Sidebar Controls & Lore
+# 4. Sidebar Lore & Reset Button
 with st.sidebar:
   st.header("⛰️ THE MOUNTAIN")
   st.markdown(
@@ -59,36 +60,39 @@ with st.sidebar:
   )
   st.divider()
 
-  mock_chance = st.slider(
-      "CROM's Hostility (Mockery %)",
-      min_value=0,
-      max_value=100,
-      value=35,
-      help="How likely CROM is to mock short, unrecognized inputs.",
-  )
-
-  st.divider()
-
   if st.button("⚡ SMITE CHAT HISTORY", use_container_width=True):
     st.session_state.messages = [{
         "role": "assistant",
         "content": (
-            "THE PAST IS ASHES. SPEAK, MORTAL, BEFORE I LOSE PATIENCE."
+            "THE PAST IS ASHES. SPEAK AGAIN, MORTAL, BEFORE I LOSE PATIENCE."
         ),
     }]
     st.rerun()
 
 
-# 5. CROM's Response Engine
-def crom_respond(user_input, hostility):
+# 5. CROM's Response Engine (Always Hostile)
+def crom_respond(user_input):
   cleaned_input = user_input.lower().strip()
 
+  # Special check: Catch what the user wants and mock it 65% of the time
+  desire_match = re.search(
+      r"\b(?:how can i get|can i get|i want|give me|how do i get)\s+(.+)",
+      cleaned_input,
+  )
+  if desire_match and random.random() < 0.65:
+    desired_thing = re.sub(r"[?.!]+$", "", desire_match.group(1)).upper()
+    return (
+        f"'{desired_thing}'?! YOU HAVE TWO HANDS AND LEGS. GO TAKE IT YOURSELF!"
+    )
+
+  # Check JSON rules
   for pattern, responses in RULES:
     if re.search(pattern, cleaned_input):
       return random.choice(responses)
 
+  # Mock short unrecognized inputs 65% of the time
   words = cleaned_input.split()
-  if len(words) <= 4 and random.random() < (hostility / 100.0):
+  if len(words) <= 4 and random.random() < 0.65:
     return f"'{cleaned_input.upper()}'? YOU SOUND LIKE A WEAKLING."
 
   return random.choice(FALLBACKS)
@@ -96,14 +100,14 @@ def crom_respond(user_input, hostility):
 
 # 6. Main Display Area (Header + Top Input Box)
 st.title("⚔️ CROM")
-st.write("Crush your enemies, see them driven before you, and hear the lamentations of the women.")
+st.caption("DO NOT PRAY. DO NOT WHINE. SPEAK.")
+
 if "messages" not in st.session_state:
   st.session_state.messages = [{
       "role": "assistant",
       "content": "CROM SITS UPON HIS MOUNTAIN. SPEAK, WEAKLING.",
   }]
 
-# Top Input Form (Pressing Enter or clicking SPEAK submits and clears the box)
 with st.form(key="crom_input_form", clear_on_submit=True):
   col1, col2 = st.columns([5, 1])
   with col1:
@@ -120,12 +124,11 @@ if submitted and prompt.strip():
   st.session_state.messages.append({"role": "user", "content": prompt})
   with st.spinner("*THUNDER RUMBLES...*"):
     time.sleep(0.5)
-  response = crom_respond(prompt, mock_chance)
+  response = crom_respond(prompt)
   st.session_state.messages.append({"role": "assistant", "content": response})
 
 st.divider()
 
-# Reverse the list so the latest exchange appears right below the input box
 for message in reversed(st.session_state.messages):
   avatar = "⚔️" if message["role"] == "assistant" else "🦴"
   with st.chat_message(message["role"], avatar=avatar):
