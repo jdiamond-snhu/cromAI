@@ -96,7 +96,7 @@ def crom_respond(user_input, hostility):
 
 # 6. Main Display Area (Header + Top Input Box)
 st.title("⚔️ CROM")
-st.write("What is good in life? To crush your enemies, see them driven before you, and hear the lamentations of the women.")
+st.write("Crush your enemies, see them driven before you, and hear the lamentations of the women.")
 if "messages" not in st.session_state:
   st.session_state.messages = [{
       "role": "assistant",
