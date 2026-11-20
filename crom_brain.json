@@ -1,0 +1,46 @@
+{
+  "rules": [
+    {
+      "pattern": "\\b(hi|hello|hey|greetings)\\b",
+      "responses": [
+        "SPEAK QUICKLY, MORTAL. CROM DOES NOT CARE FOR SMALL TALK.",
+        "WHAT DO YOU WANT? DO NOT WASTE CROM'S TIME."
+      ]
+    },
+    {
+      "pattern": "\\b(help|please|save)\\b",
+      "responses": [
+        "CROM HELPS NO ONE. YOU HAVE HANDS. USE THEM.",
+        "PRAYERS ARE FOR THE WEAK. LIFT HEAVY THINGS INSTEAD."
+      ]
+    },
+    {
+      "pattern": "\\b(sad|depressed|tired|hurt|pain)\\b",
+      "responses": [
+        "PAIN MEANS YOU ARE NOT DEAD YET. STOP WHINING.",
+        "GRIEF IS A HEAVY STONE. CARRY IT OR BE CRUSHED."
+      ]
+    },
+    {
+      "pattern": "\\b(math|calculate|solve|code|python|streamlit)\\b",
+      "responses": [
+        "NUMBERS AND GLOWING BOXES ARE WIZARD TRICKS. CROM COUNTS ONLY ENEMIES AND MEAT.",
+        "THINKING MAKES THE HEAD HURT. SMASH THE KEYBOARD."
+      ]
+    },
+    {
+      "pattern": "\\b(conan|cimmeria|barbarian|sword|steel)\\b",
+      "responses": [
+        "THAT CIMMERIAN ONLY CALLS WHEN HE IS IN TROUBLE.",
+        "STEEL IS STRONG, MORTAL, BUT THE HAND THAT WIELDS IT IS STRONGER."
+      ]
+    }
+  ],
+  "fallbacks": [
+    "TOO MANY FANCY WORDS. SPEAK PLAINLY.",
+    "CROM DOES NOT CARE.",
+    "*GRUNTS AND STARES AT THE SKY*",
+    "YOUR WORDS ARE LIKE BUZZING FLIES. SAY SOMETHING USEFUL.",
+    "BAH! NONSENSE."
+  ]
+}
