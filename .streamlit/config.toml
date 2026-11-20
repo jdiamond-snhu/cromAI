@@ -1,0 +1,7 @@
+ .stApp {{
+            background-image: url("data:image/jpg;base64,{encoded}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #f0ece1;
+        }}
