@@ -17,9 +17,8 @@ def set_background(image_path):
       encoded = base64.b64encode(img_file.read()).decode()
     bg_css = f"""
         <style>
-        .stApp {{
-            background-image: linear-gradient(rgba(15, 15, 18, 0.78), rgba(15, 15, 18, 0.88)), 
-                              url("data:image/jpg;base64,{encoded}");
+       .stApp {{
+            background-image: url("data:image/jpg;base64,{encoded}");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
