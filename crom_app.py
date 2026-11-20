@@ -96,7 +96,7 @@ def crom_respond(user_input, hostility):
 
 # 6. Main Display Area (Header + Top Input Box)
 st.title("⚔️ CROM")
-st.caption("DO NOT PRAY. DO NOT WHINE. SPEAK.")
+st.write("The past is ashes. The present burns. The future is pain.")
 
 if "messages" not in st.session_state:
   st.session_state.messages = [{
