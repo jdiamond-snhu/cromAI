@@ -56,7 +56,7 @@ FALLBACKS = brain["fallbacks"]
 with st.sidebar:
   st.header("⛰️ THE MOUNTAIN")
   st.markdown(
-      "*Crom sits upon his dark mountain, brooding over the riddle of steel.*"
+      "*Crom sits upon his dark mountain, brooding over the riddle of steel...*"
   )
   st.divider()
 
@@ -64,7 +64,7 @@ with st.sidebar:
     st.session_state.messages = [{
         "role": "assistant",
         "content": (
-            "THE PAST IS ASHES. SPEAK AGAIN, MORTAL, BEFORE I LOSE PATIENCE."
+            "THE PAST IS ASHES. SPEAK, MORTAL, BEFORE I LOSE PATIENCE."
         ),
     }]
     st.rerun()
@@ -76,13 +76,13 @@ def crom_respond(user_input):
 
   # Special check: Catch what the user wants and mock it 65% of the time
   desire_match = re.search(
-      r"\b(?:how can i get|can i get|i want|give me|how do i get)\s+(.+)",
+      r"\b(?:how can i get|can i get|i want|get|want|give me|how do i get)\s+(.+)",
       cleaned_input,
   )
   if desire_match and random.random() < 0.65:
     desired_thing = re.sub(r"[?.!]+$", "", desire_match.group(1)).upper()
     return (
-        f"'{desired_thing}'?! YOU HAVE TWO HANDS AND LEGS. GO TAKE IT YOURSELF!"
+        f"'{desired_thing}'?! YOU HAVE BREATH IN YOUR LUNGS, TWO HANDS AND LEGS! GO TAKE IT YOURSELF!"
     )
 
   # Check JSON rules
@@ -100,12 +100,12 @@ def crom_respond(user_input):
 
 # 6. Main Display Area (Header + Top Input Box)
 st.title("⚔️ CROM")
-st.caption("DO NOT PRAY. DO NOT WHINE. SPEAK.")
+st.caption("The barbarian A.I. advice-bot.")
 
 if "messages" not in st.session_state:
   st.session_state.messages = [{
       "role": "assistant",
-      "content": "CROM SITS UPON HIS MOUNTAIN. SPEAK, WEAKLING.",
+      "content": "THE PAST IS ASHES. SPEAK, MORTAL.",
   }]
 
 with st.form(key="crom_input_form", clear_on_submit=True):
